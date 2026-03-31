@@ -18,7 +18,7 @@ J'ai souhaité développer un système de recharge intelligent pour véhicule é
 <div id='concept'/> 
 
 ## Concept du SmartCharger
-Veuillez consulter le [Wiki du projet]([https://github.com/bastoon577-lang/Module_TIC/wiki](https://github.com/bastoon577-lang/Viridian_SmartCharger/wiki)) pour plus d'informations concernant le concept.
+Veuillez consulter le [Wiki du projet](https://github.com/bastoon577-lang/Viridian_SmartCharger/wiki) pour plus d'informations concernant le concept.
 
 Ce projet fonctionne de paire avec le projet [Module TIC](https://github.com/bastoon577-lang/Module_TIC/wiki), et permet la lecture des données issues du compteur Linky au travers du réseau LAN en utilisant le réseau Wifi.
  
