@@ -8,7 +8,7 @@ For more information, consult the [Wiki](https://github.com/bastoon577-lang/Viri
 ## Quick Install repository
 ```bash
 git clone https://github.com/bastoon577-lang/Viridian_SmartCharger.git
-cd Viridian_SmartCharger/
+cd Viridian_SmartCharger/SOFTWARE/Viridian_SmartCharger/
 git submodule update --init --recursive
 ```
 
