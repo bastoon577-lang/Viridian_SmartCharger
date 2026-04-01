@@ -39,6 +39,6 @@ git submodule update --init --recursive
 
 ## Compilation du projet
 
-Veuillez vous référer au Wiki.
+Veuillez vous référer au [Wiki de compilation](https://github.com/bastoon577-lang/Viridian_SmartCharger/wiki/Compilation-du-Viridian_SmartCharger).
  
  ###### Auteur : *Sébastien DALIGAULT*. 
