@@ -30,8 +30,8 @@ Ce projet fonctionne de paire avec le projet [Module TIC](https://github.com/bas
 
 Le clonage du projet passe par les étapes suivantes:
 ```
-git clone https://github.com/bastoon577-lang/ET3K_SmartCharger.git
-cd ET3K_SmartCharger/
+git clone https://github.com/bastoon577-lang/Viridian_SmartCharger.git
+cd Viridian_SmartCharger/
 git submodule update --init --recursive
 ```
 
