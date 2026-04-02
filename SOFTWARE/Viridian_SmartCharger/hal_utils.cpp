@@ -25,14 +25,6 @@ void hal_init(void) {
 }
 
 /**
- * \fn void hal_toggle_led(void)
- */
-void hal_toggle_led(void) {
-  // IDE arduino ne permet pas __attribute__((weak))
-  // Ne rien faire
-}
-
-/**
  * \fn void hal_disable_interrupt(void)
  */
 void hal_disable_interrupt(void) {

@@ -26,12 +26,6 @@
 void hal_init(void);
 
 /**
- * \fn void hal_toggle_led(void)
- * \brief Non utilisé sur Viridian
- */
-void hal_toggle_led(void);
-
-/**
  * \fn void hal_disable_interrupt(void)
  * \brief Fonction permettant de désactiver les interruptions
  */
