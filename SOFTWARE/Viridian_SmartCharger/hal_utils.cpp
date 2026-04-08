@@ -42,7 +42,7 @@ void hal_enable_interrupt(void) {
  * \fn void hal_evse_init(void)
  */
 void hal_evse_init(void) {
-  hal_lock_current();
+  hal_evse_update_output(0);
 }
 
 /**
@@ -54,46 +54,44 @@ void hal_evse_update_input(void) {
 }
 
 /**
+ * \fn void hal_evse_update_input(uint8_t current)
+ */
+void hal_evse_update_output(uint8_t current) {
+  if(current == 0) {											                    // Un blocage est demandé
+    /*************************************************************************************************************
+     *        Pilotage de l'entrée IC du Viridian en appliquant une tension :        
+     *          Inférieur à 0,8018 V, le Viridian réduit la capacité de puissance à 7A pendant 5 secondes,
+     *          puis se positionne en 'Status A' (Attente d'un VE) jusqu'à une reprise de IC > 0,8018 V.
+     *        Le tirage à l'état haut du signal PWM permet l'obtension d'un U_IC = ~ 0,655 V
+     ************************************************************************************************************/
+    analogWrite(PWM_VIRIDIAN,255);                            // Tirage du signal PWM sur Ic (Viridian) à l'état haut
+  } else {														                        // Autrement, attribution du courant de consigne
+  
+    // Le pilotage PWM sur IC n'étant pas linéaire, il est nécessaire d'établir une table de valeurs correspondantes
+    // Intensités correspondantes         6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
+    const uint8_t adjust_pwm_value[] = {220,210,200,181,171,160,152,141,134,127,120,113,105,100, 95, 90, 85, 82, 78, 74, 70, 68, 65, 60, 57, 54, 50};
+    uint8_t table_index = current-6;
+  
+    if(current < MINIMAL_CHARGE_CURRENT || current > MAXIMAL_CHARGE_CURRENT)
+      return;
+    
+    /*************************************************************************************************************
+     *        Pilotage de l'entrée IC du Viridian en appliquant une tension suivant:        
+     *          Max_VE_Current | IC_Voltage
+     *              32 A       |  2,1132 V
+     *              31 A       |  2,0554 V
+     *              ....       |  ........
+     *               6 A       |  0,8018 V
+     ************************************************************************************************************/
+    analogWrite(PWM_VIRIDIAN,adjust_pwm_value[table_index]);  // Pilotage de la sortie PWM
+  }
+}
+
+/**
  * \fn CHARGE_STATE_EVSE_e hal_evse_get_state
  */
 CHARGE_STATE_EVSE_e hal_evse_get_state(void) {
   return viridian_get_state(&rd_analyze,&gn_analyze);
-}
-
-/**
- * \fn void hal_lock_current(void)
- */
-void hal_lock_current(void) {
-  /*************************************************************************************************************
-   *        Pilotage de l'entrée IC du Viridian en appliquant une tension :        
-   *          Inférieur à 0,8018 V, le Viridian réduit la capacité de puissance à 7A pendant 5 secondes,
-   *          puis se positionne en 'Status A' (Attente d'un VE) jusqu'à une reprise de IC > 0,8018 V.
-   *        Le tirage à l'état haut du signal PWM permet l'obtension d'un U_IC = ~ 0,655 V
-   ************************************************************************************************************/
-  analogWrite(PWM_VIRIDIAN,255);                              // Tirage du signal PWM sur Ic (Viridian) à l'état haut
-}
-
-/**
- * \fn void hal_set_current(uint8_t current)
- */
-void hal_set_current(uint8_t current) {
-  // Le pilotage PWM sur IC n'étant pas linéaire, il est nécessaire d'établir une table de valeurs correspondantes
-  // Intensités correspondantes         6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
-  const uint8_t adjust_pwm_value[] = {220,210,200,181,171,160,152,141,134,127,120,113,105,100, 95, 90, 85, 82, 78, 74, 70, 68, 65, 60, 57, 54, 50};
-  uint8_t table_index = current-6;
-  
-  if(current < MINIMAL_CHARGE_CURRENT || current > MAXIMAL_CHARGE_CURRENT)
-    return;
-    
-  /*************************************************************************************************************
-   *        Pilotage de l'entrée IC du Viridian en appliquant une tension suivant:        
-   *          Max_VE_Current | IC_Voltage
-   *              32 A       |  2,1132 V
-   *              31 A       |  2,0554 V
-   *              ....       |  ........
-   *               6 A       |  0,8018 V
-   ************************************************************************************************************/
-  analogWrite(PWM_VIRIDIAN,adjust_pwm_value[table_index]);    // Pilotage de la sortie PWM
 }
 
 /**
